@@ -1,0 +1,23 @@
+name: test-self-hosted-runner
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: [self-hosted, k3s, linux, x64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show runner info
+        run: |
+          echo "Runner name: $RUNNER_NAME"
+          echo "OS: $RUNNER_OS $RUNNER_ARCH"
+          uname -a
+          id
+      - name: Network test
+        run: curl -s https://google.com | head -n1
+      - name: Sleep to observe logs
+        run: sleep 10
+
